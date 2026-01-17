@@ -3,16 +3,8 @@ import { IBM_Plex_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import { dark } from "@clerk/themes";
 import { ThemeProvider } from "@/components/theme-provider";
-
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
-import { ConvexClientProvider } from "@/components/ConvexClientProvider";
+import { ClerkProvider } from "@clerk/nextjs";
+import ConvexClientProvider from "@/components/ConvexClientProvider";
 const inter = Inter({
   variable: "--font-geist-inter",
   subsets: ["latin"],
@@ -35,38 +27,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider
-      appearance={{
-        theme: dark,
-      }}
-    >
-      <html lang="en" suppressHydrationWarning>
-        <body className={`${inter.variable} ${plexMono.variable} antialiased`}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.variable} ${plexMono.variable} antialiased`}>
+        <ClerkProvider appearance={{ theme: dark }}>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >
-            <ConvexClientProvider>
-              <header className="flex justify-end items-center p-4 gap-4 h-16">
-                <SignedOut>
-                  <SignInButton />
-                  <SignUpButton>
-                    <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-                      Sign Up
-                    </button>
-                  </SignUpButton>
-                </SignedOut>
-                <SignedIn>
-                  <UserButton />
-                </SignedIn>
-              </header>
-              {children}
-            </ConvexClientProvider>
+            <ConvexClientProvider>{children}</ConvexClientProvider>
           </ThemeProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }
